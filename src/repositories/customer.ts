@@ -1,9 +1,7 @@
 
+import { ICustomer } from "../myrpTypes";
 import MyDB from "./db";
-interface ICustomer {
-    id: number,
-    name: string
-}
+
 class CustomerRepo {
     private db: MyDB
     public constructor() {
