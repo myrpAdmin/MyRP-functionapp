@@ -1,11 +1,17 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import CustomerSvc from "../services/customer";
 
 export async function getCustomers(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    context.log(`Http function processed request for url "${request.url}"`);
 
-    const name = request.query.get('name') || await request.text() || 'world';
+    const svc = new CustomerSvc();
+    const customers = await svc.getCustomers();
 
-    return { body: `Hello, ${name}!` };
+    return { status: 200,
+        headers: {
+            'Content-Type': 'application/json' // Set content type to JSON
+        },
+        body: JSON.stringify(customers)
+    };
 };
 
 app.http('getCustomers', {
