@@ -2,14 +2,16 @@
 import { ICustomer } from "../myrpTypes";
 import MyDB from "./db";
 
-class CustomerRepo {
+class CustomerRepository {
     private db: MyDB
     public constructor() {
         this.db = MyDB.getInstance()
     }
 
-    public async getCustomers() {
-        const sql = "SELECT * FROM Customers";
+    public async getCustomer(id?: number) {
+        let sql = "SELECT * FROM customer";
+        if(id) sql += ` where id = ${id}`;
+        
         const results = await this.db.executeQuery<ICustomer[]>(sql);
         return results.length ? results : null;
     }
@@ -18,4 +20,4 @@ class CustomerRepo {
 
 
 
-export default CustomerRepo;
+export default CustomerRepository;
