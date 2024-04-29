@@ -12,12 +12,6 @@ interface ICustomer {
     softDelete: boolean;
 }
 
-export enum HttpMethod {
-    GET = "GET",
-    POST = "POST"
-}
-
-
 export type {
     ICustomer
 }
