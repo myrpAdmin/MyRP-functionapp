@@ -10,10 +10,10 @@ class CustomerRepository {
   public async getCustomer(id?: any) {
     let results;
     if (id) {
-      let sql = `SELECT * FROM customer where id = ?`;
+      let sql = `SELECT * FROM customer where id = ? and softDelete=false`;
       results = await this.db.executeQuery<ICustomer[]>(sql, [id]);
     } else {
-      let sql = `SELECT * FROM customer`;
+      let sql = `SELECT * FROM customer where softDelete=false`;
       results = await this.db.executeQuery<ICustomer[]>(sql);
     }
 
@@ -46,7 +46,7 @@ class CustomerRepository {
     return results.length ? results : null;
   }
   public async deleteCustomer(id?: any) {
-    let sql = `DELETE FROM customer where id = ?`;
+    let sql = `Update customer set softDelete=true where id = ?`;
     let results = await this.db.executeQuery<ICustomer[]>(sql, [id]);
     return results.length ? results : null;
   }
