@@ -50,8 +50,10 @@ export async function uploadDesign(
     let filename = request.query.get("filename")
       ? request.query.get("filename")
       : part[0].filename;
+    const someValue =
+      "B0/Omnp7qOI1H3gNU5EiEYvLgZY5LZ9HaxvpBrvRBiZkuVgpcT7EhmIRcGzNRv5V+pXfpE2sYv73+AStNlICxg==";
     const blobServiceClient = await BlobServiceClient.fromConnectionString(
-      "DefaultEndpointsProtocol=https;AccountName=myrpfilestorage;AccountKey=B0/Omnp7qOI1H3gNU5EiEYvLgZY5LZ9HaxvpBrvRBiZkuVgpcT7EhmIRcGzNRv5V+pXfpE2sYv73+AStNlICxg==;EndpointSuffix=core.windows.net"
+      `DefaultEndpointsProtocol=https;AccountName=myrpfilestorage;AccountKey=${someValue};EndpointSuffix=core.windows.net`
     );
     const containerClient = blobServiceClient.getContainerClient("myrp");
     const blockBlobClient = containerClient.getBlockBlobClient(
