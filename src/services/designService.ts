@@ -20,6 +20,18 @@ class DesignService {
   public async deleteDesign(designId: Number) {
     return await this.repo.deleteDesign(designId);
   }
+
+  public async getStoneMapping(designId?: string) {
+    return await this.repo.getStoneMapping(designId);
+  }
+  public async saveStoneMapping(
+    designId: string,
+    stoneMappings: [IStoneMapping]
+  ) {
+    if (designId) {
+      return await this.repo.saveStoneMapping(designId, stoneMappings);
+    }
+  }
 }
 
 export default DesignService;
