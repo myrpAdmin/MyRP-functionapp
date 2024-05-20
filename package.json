@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
-    "mysql": "^2.18.1"
+    "@azure/storage-blob": "^12.17.0",
+    "mysql": "^2.18.1",
+    "parse-multipart": "^1.0.4"
   },
   "devDependencies": {
     "@types/mysql": "^2.15.26",

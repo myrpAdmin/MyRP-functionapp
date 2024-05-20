@@ -7,9 +7,7 @@ interface IDesign {
   diamondCarats: number;
   csPcs: number;
   csCarats: number;
-  imageBaseUrl: string;
-  finishedImage: string;
-  sketchImage: string;
+  designImages: string;
   cadImages: string;
   cadStoneMapId: number;
   createdBy: number;

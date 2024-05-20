@@ -60,8 +60,8 @@ async function handlePost(
   context: InvocationContext
 ): Promise<HttpResponseInit> {
   const customer = await request.json();
-  svc.saveCustomer(customer as ICustomer);
-  return { body: JSON.stringify(customer) };
+  const response = await svc.saveCustomer(customer as ICustomer);
+  return { body: JSON.stringify(response) };
 }
 
 app.http("customer", {

@@ -10,10 +10,10 @@ class CustomerRepository {
   public async getCustomer(id?: any) {
     let results;
     if (id) {
-      let sql = `SELECT * FROM customer where id = ? and softDelete=false`;
+      let sql = `SELECT * FROM customer where id = ? and softDelete=false order by updatedOn desc`;
       results = await this.db.executeQuery<ICustomer[]>(sql, [id]);
     } else {
-      let sql = `SELECT * FROM customer where softDelete=false`;
+      let sql = `SELECT * FROM customer where softDelete=false order by updatedOn desc`;
       results = await this.db.executeQuery<ICustomer[]>(sql);
     }
 
@@ -22,33 +22,46 @@ class CustomerRepository {
 
   public async saveCustomer(customer?: ICustomer) {
     let sql =
-      "INSERT into customer (name, phone, email, address) values (?, ?, ?, ?)";
+      "INSERT into customer (name, phone, email, address, createdBy, createdOn, updatedBy, updatedOn) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    const results = await this.db.executeQuery<ICustomer[]>(sql, [
+    const result = await this.db.executeQuery<any>(sql, [
       customer.name,
       customer.phone,
       customer.email,
       customer.address,
+      1,
+      new Date(),
+      1,
+      new Date(),
     ]);
-    return results.length ? results : null;
+    if (result && result.affectedRows > 0) {
+      customer.id = result.insertId;
+      return customer;
+    } else {
+      return null;
+    }
   }
   public async updateCustomer(customer?: ICustomer) {
+    customer.updatedBy = 1;
+    customer.updatedOn = new Date();
     let sql =
-      "Update customer set name=?, phone=?, email=?, address=? where id = ?";
+      "Update customer set name=?, phone=?, email=?, address=?, updatedBy=?, updatedOn=? where id = ?";
 
-    const results = await this.db.executeQuery<ICustomer[]>(sql, [
+    const result = await this.db.executeQuery<any>(sql, [
       customer.name,
       customer.phone,
       customer.email,
       customer.address,
+      1,
+      new Date(),
       customer.id,
     ]);
-    return results.length ? results : null;
+    return result.affectedRows > 0 ? customer : null;
   }
   public async deleteCustomer(id?: any) {
-    let sql = `Update customer set softDelete=true where id = ?`;
-    let results = await this.db.executeQuery<ICustomer[]>(sql, [id]);
-    return results.length ? results : null;
+    let sql = `Update customer set softDelete=true, updatedBy=?, updatedOn=? where id = ?`;
+    let result = await this.db.executeQuery<any>(sql, [1, new Date(), id]);
+    return result.affectedRows > 0 ? id : null;
   }
 }
 
